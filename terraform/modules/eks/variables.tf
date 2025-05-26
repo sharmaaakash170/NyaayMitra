@@ -22,6 +22,3 @@ variable "instance_types" {
   type = list(string)
 }
 
-variable "service_account_role_arn" {
-  type = string
-}

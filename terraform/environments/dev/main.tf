@@ -12,7 +12,6 @@ module "iam" {
   source = "../../modules/iam"
   env = var.env
   tags = var.tags
-  eks_cluster_name = module.eks.eks_cluster_name
 }
 
 module "ecr" {
@@ -28,9 +27,8 @@ module "eks" {
   eks_cluster_role_arn = module.iam.eks_cluster_role_arn
   eks_node_group_role_arn = module.iam.eks_node_group_role_arn
   instance_types = var.instance_types
-  private_subnet_ids = module.vpc.private_subnets
-  service_account_role_arn = module.iam.service_account_role_arn
-  
+  private_subnet_ids = module.vpc.private_subnets  
+
   depends_on = [ module.vpc, module.iam ]
 }
 
