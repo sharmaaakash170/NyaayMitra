@@ -28,15 +28,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3 
       
       - name: Terraform init
-        uses: terraform init 
+        run: terraform init 
 
       - name: Terraform Format
-        uses: terraform fmt -recursive
+        run: terraform fmt -recursive
 
       - name: Terraform Plan
-        uses: terraform plan -input=false 
+        run: terraform plan -input=false 
       
       - name: Terraform Apply 
-        uses: terraform apply -input=false --auto-approve
+        run: terraform apply -input=false --auto-approve
       
   
