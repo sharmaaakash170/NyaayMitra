@@ -37,7 +37,6 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   addon_name = "aws-ebs-csi-driver"
   addon_version = "v1.44.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
-  service_account_role_arn = var.eks_node_group_role_arn
 
   tags = merge(var.tags, {
     Environment = var.env
