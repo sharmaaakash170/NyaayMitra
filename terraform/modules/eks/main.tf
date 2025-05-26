@@ -48,8 +48,8 @@ data "aws_eks_cluster" "this" {
 
 resource "aws_iam_openid_connect_provider" "this" {
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.aws_eks_cluster.this.identity[0].oidc[0].thumbprint]
-  url             = data.aws_eks_cluster.this.identity[0].oidc[0].issuer
+  thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da0afd40f78"]
+  url             = data.aws_eks_cluster.this.identity[0].oidc.issuer
 }
 
 resource "aws_iam_role" "ebs_csi_driver_irsa_role" {
