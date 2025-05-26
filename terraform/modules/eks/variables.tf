@@ -22,6 +22,6 @@ variable "instance_types" {
   type = list(string)
 }
 
-# variable "ec2_ssh_key" {
-#   type = string
-# }
+variable "service_account_role_arn" {
+  type = string
+}

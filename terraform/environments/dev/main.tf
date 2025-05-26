@@ -28,6 +28,7 @@ module "eks" {
   eks_node_group_role_arn = module.iam.eks_node_group_role_arn
   instance_types = var.instance_types
   private_subnet_ids = module.vpc.private_subnets
+  service_account_role_arn = module.iam.service_account_role_arn
   
   depends_on = [ module.vpc, module.iam ]
 }
