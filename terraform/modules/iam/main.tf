@@ -41,11 +41,10 @@ resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
   role       = aws_iam_role.eks_node_group_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "ebs_csi_driver" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+resource "aws_iam_role_policy_attachment" "ebs_csi" {
   role       = aws_iam_role.eks_node_group_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
-
 resource "aws_iam_role_policy" "eks_node_group_ec2_permissions" {
   name = "eks-node-group-ec2-policy"
   role = aws_iam_role.eks_node_group_role.name
@@ -60,7 +59,9 @@ resource "aws_iam_role_policy" "eks_node_group_ec2_permissions" {
           "ec2:AttachVolume",
           "ec2:DeleteVolume",
           "ec2:DescribeVolume*",
-          "ec2:DetachVolume"
+          "ec2:DetachVolume",
+          "ec2:DescribeVolumes",
+          "ec2:DescribeInstances"
         ],
         Resource = "*"
       }
