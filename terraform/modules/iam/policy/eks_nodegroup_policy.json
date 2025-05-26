@@ -9,8 +9,7 @@
                 "ec2:DeleteVolume",
                 "ec2:DescribeVolume*",
                 "ec2:DetachVolume"
-            ],
-            "Resource": "*"
+            ]
         }
     ]
 }
