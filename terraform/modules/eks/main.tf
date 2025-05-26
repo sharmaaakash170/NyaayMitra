@@ -49,7 +49,7 @@ data "aws_eks_cluster" "this" {
 resource "aws_iam_openid_connect_provider" "this" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da0afd40f78"]
-  url             = data.aws_eks_cluster.this.identity[0].oidc.issuer
+  url = data.aws_eks_cluster.this.identity.oidc.issuer
 }
 
 resource "aws_iam_role" "ebs_csi_driver_irsa_role" {
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "irsa_assume_role" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:sub"
+      variable = "${replace(data.aws_eks_cluster.this.identity.oidc.issuer, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
   }
