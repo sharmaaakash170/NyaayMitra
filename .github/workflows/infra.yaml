@@ -2,8 +2,8 @@ name: Terraform Infra Pipeline
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'terraform/**'
   workflow_dispatch:
 
 env:
