@@ -55,13 +55,7 @@ resource "aws_iam_role_policy" "eks_node_group_ec2_permissions" {
       {
         Effect = "Allow",
         Action = [
-          "ec2:CreateVolume",
-          "ec2:AttachVolume",
-          "ec2:DeleteVolume",
-          "ec2:DescribeVolume*",
-          "ec2:DetachVolume",
-          "ec2:DescribeVolumes",
-          "ec2:DescribeInstances"
+          "ec2:*"
         ],
         Resource = "*"
       }
