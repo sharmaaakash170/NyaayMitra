@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="nameApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Name App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+
+  <h1>Name Entry</h1>
+  <input type="text" ng-model="name" placeholder="Enter name">
+  <button ng-click="addName()">Add</button>
+  <button ng-click="showNames()">Show</button>
+
+  <ul>
+    <li ng-repeat="n in names">{{n.name}}</li>
+  </ul>
+
+  <script>
+    const app = angular.module('nameApp', []);
+
+    app.controller('MainCtrl', function($scope, $http) {
+      $scope.names = [];
+
+      $scope.addName = function() {
+        $http.post('http://localhost:3000/api/names', { name: $scope.name })
+          .then(() => {
+            $scope.name = '';
+            alert('Name added!');
+          });
+      };
+
+      $scope.showNames = function() {
+        $http.get('http://localhost:3000/api/names')
+          .then(response => {
+            $scope.names = response.data;
+          });
+      };
+    });
+  </script>
+</body>
+</html>

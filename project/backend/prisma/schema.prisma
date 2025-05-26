@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  MASTER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  phone         String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  reviews       Review[]  @relation("ReviewedBy")
+  receivedReviews Review[] @relation("ReviewedMaster")
+  masterProfile Master?
+  adminProfile  Admin?
+}
+
+model Master {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String    @unique @db.ObjectId
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio           String
+  yearsOfExperience Int
+  professionId  String    @db.ObjectId
+  profession    Profession @relation(fields: [professionId], references: [id])
+  averageRating Float     @default(0)
+  isVerified    Boolean   @default(false)
+  isAvailable   Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Admin {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String    @unique @db.ObjectId
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Profession {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String    @unique
+  description   String
+  imageUrl      String?
+  isActive      Boolean   @default(true)
+  masters       Master[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Review {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  rating        Int       // 1-5 rating
+  comment       String?
+  reviewerId    String    @db.ObjectId
+  reviewer      User      @relation("ReviewedBy", fields: [reviewerId], references: [id])
+  masterId      String    @db.ObjectId
+  master        User      @relation("ReviewedMaster", fields: [masterId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
