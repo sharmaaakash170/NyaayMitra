@@ -1,0 +1,48 @@
+name: Deploy Frontend Pipeline 
+
+on: 
+  push:
+    paths:
+      - 'my-web-app/frontend/**'
+  workflow_run:
+    workflows: [ "Deploy Database Pipeline" ]
+    types:
+      - completed
+  workflow_dispatch:
+    
+env:
+  AWS_REGION: us-east-1
+  EKS_CLUSTER_NAME: dev-eks-cluster
+  ECR_REPO_NAME: dev-ecr-repo
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TAG: frontend
+  ACCOUNT_ID: "891062950211"
+
+jobs:
+  deploy: 
+    name: Deploy Frontend 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo 
+        uses: actions/checkout@v3 
+
+      - name: Login to ECR 
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | \
+          docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+        
+      - name: Build and Push Frontend Docker Image 
+        run: |
+          docker build -t $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$TAG ./my-web-app/frontend/
+          docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$TAG
+
+      - name: Update Kubeconfig
+        run: |
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+      - name: Deploy to EKS 
+        run: |
+          kubectl apply -f ./k8s/frontend/deployment.yaml 
+          kubectl apply -f ./k8s/frontend/service.yaml 

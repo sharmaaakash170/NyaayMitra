@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: a
+        image: 891062950211.dkr.ecr.us-east-1.amazonaws.com/dev-ecr-repo:backend
         resources:
           limits:
             memory: "512Mi"
