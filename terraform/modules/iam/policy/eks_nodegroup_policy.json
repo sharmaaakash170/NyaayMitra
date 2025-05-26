@@ -1,15 +1,14 @@
 {
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" :"2012-10-17",
+    "Statement": 
+    [
         {
+            "Action": "sts:AssumeRole",
             "Effect": "Allow",
-            "Action": [
-                "ec2:CreateVolume",
-                "ec2:AttachVolume",
-                "ec2:DeleteVolume",
-                "ec2:DescribeVolume*",
-                "ec2:DetachVolume"
-            ]
+            "Principal": 
+                {
+                    "Service" :"ec2.amazonaws.com"
+                }
         }
     ]
 }

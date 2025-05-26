@@ -46,3 +46,26 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver" {
   role       = aws_iam_role.eks_node_group_role.name
 }
 
+resource "aws_iam_role_policy" "eks_node_group_ec2_permissions" {
+  name = "eks-node-group-ec2-policy"
+  role = aws_iam_role.eks_node_group_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:CreateVolume",
+          "ec2:AttachVolume",
+          "ec2:DeleteVolume",
+          "ec2:DescribeVolume*",
+          "ec2:DetachVolume"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
