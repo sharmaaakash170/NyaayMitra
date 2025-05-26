@@ -12,6 +12,7 @@ module "iam" {
   source = "../../modules/iam"
   env = var.env
   tags = var.tags
+  eks_cluster_name = module.eks.eks_cluster_name
 }
 
 module "ecr" {

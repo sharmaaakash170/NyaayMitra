@@ -65,7 +65,7 @@ resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
 # }
 
 data "aws_eks_cluster" "this" {
-  name = aws_eks_cluster.this.name
+  name = var.eks_cluster_name
 }
 
 resource "aws_iam_openid_connect_provider" "this" {
