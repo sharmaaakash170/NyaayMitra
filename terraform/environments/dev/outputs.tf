@@ -17,3 +17,7 @@ output "cdn_url" {
 output "http_api_id" {
   value = module.api_gateway.http_api_id
 }
+
+output "aws_ecr_repository_url" {
+  value = module.ecr.aws_ecr_repository_url
+}

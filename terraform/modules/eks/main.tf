@@ -34,7 +34,7 @@ resource "aws_eks_node_group" "this" {
 
 resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name = aws_eks_cluster.this.name
-  addon_name = "${var.env}-ebs-csi-driver"
+  addon_name = "aws-ebs-csi-driver"
   addon_version = "v1.44.0-eksbuild.1"
   resolve_conflicts = "OVERWRITE"
   service_account_role_arn = var.eks_node_group_role_arn

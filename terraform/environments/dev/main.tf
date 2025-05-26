@@ -14,6 +14,12 @@ module "iam" {
   tags = var.tags
 }
 
+module "ecr" {
+  source = "../../modules/ecr"
+  env = var.env
+  tags = var.tags
+}
+
 module "eks" {
   source = "../../modules/eks"
   env = var.env 
