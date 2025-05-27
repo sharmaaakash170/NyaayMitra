@@ -50,7 +50,7 @@ resource "aws_iam_policy" "alb_ingress_policy" {
 resource "aws_iam_role" "alb_ingress_role" {
   name = "${var.env}-alb-ingress-role"
 
-  assume_role_policy = file("${path.module}/policy/eks_nodegroup_policy.json")
+  assume_role_policy = file("${path.module}/policy/assume_role_policy.json")
 }
 
 resource "aws_iam_role_policy_attachment" "alb_attach" {
