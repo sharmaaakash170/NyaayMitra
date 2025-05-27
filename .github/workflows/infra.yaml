@@ -8,14 +8,17 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   S3_BUCKET_NAME: dev-environment-state-lock-bucket-nyaay-mitra
 
 jobs:
   terraform: 
     name: Terraform CICD Pipeline 
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest  
+    permissions:
+      id-token: write
+      contents: read
 
     defaults:
       run: 
