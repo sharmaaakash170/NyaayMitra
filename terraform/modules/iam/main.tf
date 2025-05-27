@@ -41,25 +41,19 @@ resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
   role       = aws_iam_role.eks_node_group_role.name
 }
 
-# resource "aws_iam_role_policy_attachment" "ebs_csi" {
-#   role       = aws_iam_role.eks_node_group_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-# }
+resource "aws_iam_policy" "alb_ingress_policy" {
+  name = "AWSLoadBalancerControllerIAMPolicy"
+  path = "/"
+  policy = file("${path.module}/policy/iam-policy-alb-controller.json")
+}
 
-# resource "aws_iam_role_policy" "eks_node_group_ec2_permissions" {
-#   name = "eks-node-group-ec2-policy"
-#   role = aws_iam_role.eks_node_group_role.name
+resource "aws_iam_role" "alb_ingress_role" {
+  name = "${var.env}-alb-ingress-role"
 
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Effect = "Allow",
-#         Action = [
-#           "ec2:*"
-#         ],
-#         Resource = "*"
-#       }
-#     ]
-#   })
-# }
+  assume_role_policy = file("${path.module}/policy/eks_nodegroup_policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "alb_attach" {
+  policy_arn = aws_iam_policy.alb_ingress_policy.arn
+  role       = aws_iam_role.alb_ingress_role.name
+}
