@@ -24,13 +24,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3 
-      
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     role-to-assume: arn:aws:iam::891062950211:role/github-actions-eks-deployer-role
-      #     aws-region: us-east-1
-      #     role-session-name: GitHubActionsEKSDeploy
 
       - name: Setup Terrform 
         uses: hashicorp/setup-terraform@v3 
@@ -49,10 +42,10 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -input=false 
       
-      - name: Terraform Apply 
-        run: terraform apply -input=false --auto-approve
+      # - name: Terraform Apply 
+      #   run: terraform apply -input=false --auto-approve
       
-      # - name: Terraform Destroy 
-      #   run: terraform destroy -input=false --auto-approve
+      - name: Terraform Destroy 
+        run: terraform destroy -input=false --auto-approve
       
   
