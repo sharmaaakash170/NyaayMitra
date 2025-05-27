@@ -54,3 +54,4 @@ module "api_gateway" {
   env = var.env 
   tags = var.tags
 }
+
