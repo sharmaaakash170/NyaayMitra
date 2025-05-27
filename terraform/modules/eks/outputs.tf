@@ -7,7 +7,7 @@ output "cluster_endpoint" {
 }
 
 output "cluster_ca_certificate" {
-  value = aws_eks_cluster.this.certificate_authority
+  value = aws_eks_cluster.this.certificate_authority[0].data
 }
 
 output "cluster_sg_group_id" {
