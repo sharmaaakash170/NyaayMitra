@@ -38,6 +38,8 @@ module "alb_ingress" {
   oidc_provider_url = module.eks.oidc_provider_url
   env = var.env
   tags = var.tags
+
+  depends_on = [ module.eks ]
 }
 
 module "rds" {
