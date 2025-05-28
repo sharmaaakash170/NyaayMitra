@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "irsa_assume_role" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(data.aws_eks_cluster.this.identity.0.oidc.0.issuer, "https://", "")}:sub"
+      variable = "${replace(aws_iam_openid_connect_provider.this.url, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
   }
