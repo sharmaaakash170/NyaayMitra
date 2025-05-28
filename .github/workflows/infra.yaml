@@ -11,6 +11,8 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   S3_BUCKET_NAME: dev-environment-state-lock-bucket-nyaay-mitra
+  EKS_CLUSTER_NAME: dev-eks-cluster
+  ECR_REPO_NAME: dev-ecr-repo
 
 jobs:
   terraform: 
@@ -44,7 +46,11 @@ jobs:
       
       # - name: Terraform Apply 
       #   run: terraform apply -input=false --auto-approve
-      
+
+      - name: Update Kubeconfig
+        run: |
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
       - name: Delete Ingress manually (workaround for destroy error)
         run: |
           kubectl delete ingress frontend-ingress -n default || echo "Ingress not found, continuing"
