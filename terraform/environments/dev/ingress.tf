@@ -30,4 +30,6 @@ resource "kubernetes_ingress_v1" "frontend" {
       }
     }
   }
+
+  depends_on = [ kubernetes_service.frontend ]
 }

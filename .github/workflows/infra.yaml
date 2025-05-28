@@ -45,6 +45,10 @@ jobs:
       # - name: Terraform Apply 
       #   run: terraform apply -input=false --auto-approve
       
+      - name: Delete Ingress manually (workaround for destroy error)
+        run: |
+          kubectl delete ingress frontend-ingress -n default || echo "Ingress not found, continuing"
+      
       - name: Terraform Destroy 
         run: terraform destroy -input=false --auto-approve
       
