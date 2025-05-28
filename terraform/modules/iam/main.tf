@@ -47,10 +47,31 @@ resource "aws_iam_policy" "alb_ingress_policy" {
   policy = file("${path.module}/policy/iam-policy-alb-controller.json")
 }
 
-resource "aws_iam_role" "alb_ingress_role" {
-  name = "${var.env}-alb-ingress-role"
+data "aws_iam_policy_document" "alb_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
 
-  assume_role_policy = file("${path.module}/policy/assume_role_policy.json")
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${var.oidc_provider_url}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
+
+
+resource "aws_iam_role" "alb_ingress_role" {
+  name               = "${var.env}-alb-ingress-role"
+  assume_role_policy = data.aws_iam_policy_document.alb_assume_role_policy.json
+
+  tags = merge(var.tags, {
+    Name = "${var.env}-alb-ingress-role"
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "alb_attach" {

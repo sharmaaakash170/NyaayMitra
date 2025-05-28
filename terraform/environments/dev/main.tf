@@ -12,6 +12,8 @@ module "iam" {
   source = "../../modules/iam"
   env = var.env
   tags = var.tags
+  oidc_provider_arn = modules.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
 }
 
 module "ecr" {
@@ -30,6 +32,11 @@ module "eks" {
   private_subnet_ids = module.vpc.private_subnets  
 
   depends_on = [ module.vpc, module.iam ]
+}
+
+module "alb_ingress" {
+  source = "../../modules/alb_ingress"
+  alb_controller_role_arn = module.iam.alb_ingress_role_arn
 }
 
 module "rds" {
