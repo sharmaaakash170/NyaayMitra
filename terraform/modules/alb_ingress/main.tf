@@ -21,7 +21,6 @@ data "aws_iam_policy_document" "alb_assume_role_policy" {
   }
 }
 
-
 resource "aws_iam_role" "alb_ingress_role" {
   name               = "${var.env}-alb-ingress-role"
   assume_role_policy = data.aws_iam_policy_document.alb_assume_role_policy.json
@@ -42,7 +41,7 @@ resource "kubernetes_service_account" "alb_controller_sa" {
     name = "aws-load-balancer-controller"
     namespace = "kube-system"
     annotations = {
-      "eks.amazonaws.com/role-arn" = var.alb_controller_role_arn
+      "eks.amazonaws.com/role-arn" = aws_iam_role.alb_ingress_role.arn
     }
   }
 }
